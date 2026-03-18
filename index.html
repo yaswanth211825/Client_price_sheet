@@ -545,7 +545,7 @@ function buildUI() {
           <div class="pkg-tagline">${p.tagline}</div>
         </div>
         <div class="pkg-right">
-          ${!p.hideTP ? `<span class="pkg-tl-chip">${p.tl}</span>` : ''}
+          ${!p.hideTP ? `<span class="pkg-tl-chip">${p.tl}</span>` : `<span class="pkg-tl-chip">${p.tl}</span>`}
           <div class="pkg-price-wrap">
             <div class="pkg-price" id="ptotal-${p.id}">—</div>
             <div class="pkg-feat-count" id="pcount-${p.id}"></div>
@@ -556,7 +556,7 @@ function buildUI() {
         <div class="tbl-head">
           <div></div>
           <div>Feature & What's Included</div>
-          ${!p.hideTP ? '<div>Estimated Timeline</div><div style="text-align:right">Price</div>' : '<div></div><div></div>'}
+          <div>Estimated Timeline</div><div style="text-align:right">Price</div>
         </div>
         <div id="pbody-${p.id}"></div>
         ${p.note ? `<div class="seo-note">⚡ ${p.note}</div>` : ''}
@@ -611,7 +611,7 @@ function buildUI() {
         : `<div class="feat-cb"><input type="checkbox" id="chk-${id}" onclick="event.stopPropagation();toggleFeat('${id}')"></div>`;
 
       const priceHtml = p.hideTP
-        ? `<div class="feat-price included">—</div>`
+        ? `<div class="feat-price included">TBD</div>`
         : f.free
           ? `<div class="feat-price free">Free</div>`
           : `<div class="feat-price" id="price-${id}">${fmt(p_val)}</div>`;
@@ -623,7 +623,7 @@ function buildUI() {
           ${incHtml}
           ${noteHtml}
         </div>
-        <div class="feat-tl">${p.hideTP ? '' : tlBadge(f.tl, f.can)}</div>
+        <div class="feat-tl">${tlBadge(f.tl, f.can)}</div>
         ${priceHtml}`;
       body.appendChild(row);
     });
@@ -679,10 +679,10 @@ function updatePkg(pid) {
   pkg.features.forEach((f, i) => {
     const id = pid + i;
     if (!sel[id] || f.free) return;
-    total += price(f.devH, f.gH||0, f.aiMo||0, f.fixedCost||0, f.can);
+    if (!pkg.hideTP) total += price(f.devH, f.gH||0, f.aiMo||0, f.fixedCost||0, f.can);
     count++;
   });
-  document.getElementById('ptotal-' + pid).textContent = count > 0 ? fmt(total) : '—';
+  document.getElementById('ptotal-' + pid).textContent = pkg.hideTP ? (count > 0 ? 'TBD' : '—') : (count > 0 ? fmt(total) : '—');
   document.getElementById('pcount-' + pid).textContent = count > 0 ? count + ' feature' + (count > 1 ? 's' : '') + ' selected' : '';
   document.getElementById('pkg-' + pid).classList.toggle('has-sel', count > 0);
 }
@@ -698,7 +698,7 @@ function calcFooter() {
       if (!sel[id] || f.free) return;
       totalFeat++;
       totalDevH += f.devH;
-      totalPrice += price(f.devH, f.gH||0, f.aiMo||0, f.fixedCost||0, f.can);
+      if (!p.hideTP) totalPrice += price(f.devH, f.gH||0, f.aiMo||0, f.fixedCost||0, f.can);
       if (p.perProject) hasPerProject = true;
     });
   });
