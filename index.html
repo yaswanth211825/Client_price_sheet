@@ -480,7 +480,7 @@ const packages = [
   },
 
   // ══ AI AGENT ══
-  { id:'J', phase:'Phase 2 — AI Playground', name:'AI Design Assistant (Research Phase)', tl:'5+ weeks',
+  { id:'J', phase:'Phase 2 — AI Playground', name:'AI Design Assistant (Research Phase)', tl:'5+ weeks', hideTP: true,
     tagline:'Tell the AI what you want — it draws it for you',
     features:[
       { n:'AI drawing assistant',
@@ -495,7 +495,7 @@ const packages = [
   },
 
   // ══ ELEVATION ══
-  { id:'K', phase:'Phase 2 — AI Playground', name:'AI Elevation Generator', tl:'2–3 weeks',
+  { id:'K', phase:'Phase 2 — AI Playground', name:'AI Elevation Generator', tl:'2–3 weeks', hideTP: true,
     tagline:'Generate photorealistic building elevations from your 3D design using AI',
     features:[
       { n:'AI elevation image generator',
@@ -545,7 +545,7 @@ function buildUI() {
           <div class="pkg-tagline">${p.tagline}</div>
         </div>
         <div class="pkg-right">
-          <span class="pkg-tl-chip">${p.tl}</span>
+          ${!p.hideTP ? `<span class="pkg-tl-chip">${p.tl}</span>` : ''}
           <div class="pkg-price-wrap">
             <div class="pkg-price" id="ptotal-${p.id}">—</div>
             <div class="pkg-feat-count" id="pcount-${p.id}"></div>
@@ -556,8 +556,7 @@ function buildUI() {
         <div class="tbl-head">
           <div></div>
           <div>Feature & What's Included</div>
-          <div>Estimated Timeline</div>
-          <div style="text-align:right">Price</div>
+          ${!p.hideTP ? '<div>Estimated Timeline</div><div style="text-align:right">Price</div>' : '<div></div><div></div>'}
         </div>
         <div id="pbody-${p.id}"></div>
         ${p.note ? `<div class="seo-note">⚡ ${p.note}</div>` : ''}
@@ -597,7 +596,7 @@ function buildUI() {
       const row = document.createElement('div');
       row.className = 'feat' + (f.free ? ' free-row' : '');
       row.id = 'row-' + id;
-      if (!f.free) row.onclick = () => toggleFeat(id);
+      if (!f.free && !p.hideTP) row.onclick = () => toggleFeat(id);
 
       const incHtml = f.inc?.length
         ? `<ul class="feat-includes">${f.inc.map(x => `<li>${x}</li>`).join('')}</ul>`
@@ -607,13 +606,15 @@ function buildUI() {
       const freeBadge = f.free ? `<span class="badge b-free">FREE — Included</span>` : '';
       const p_val = f.free ? '' : price(f.devH, f.gH||0, f.aiMo||0, f.fixedCost||0, f.can);
 
-      const checkHtml = f.free
+      const checkHtml = (f.free || p.hideTP)
         ? `<div></div>`
         : `<div class="feat-cb"><input type="checkbox" id="chk-${id}" onclick="event.stopPropagation();toggleFeat('${id}')"></div>`;
 
-      const priceHtml = f.free
-        ? `<div class="feat-price free">Free</div>`
-        : `<div class="feat-price" id="price-${id}">${fmt(p_val)}</div>`;
+      const priceHtml = p.hideTP
+        ? `<div class="feat-price included">—</div>`
+        : f.free
+          ? `<div class="feat-price free">Free</div>`
+          : `<div class="feat-price" id="price-${id}">${fmt(p_val)}</div>`;
 
       row.innerHTML = `
         ${checkHtml}
@@ -622,7 +623,7 @@ function buildUI() {
           ${incHtml}
           ${noteHtml}
         </div>
-        <div class="feat-tl">${tlBadge(f.tl, f.can)}</div>
+        <div class="feat-tl">${p.hideTP ? '' : tlBadge(f.tl, f.can)}</div>
         ${priceHtml}`;
       body.appendChild(row);
     });
