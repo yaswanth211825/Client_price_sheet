@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Home Developers — Project Quote</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f7f5f0;--surface:#fff;--surface2:#f2efe8;--border:#e0dbd0;--border2:#ccc9be;
+  --text:#1a1814;--text2:#5a5750;--text3:#9a968e;
+  --accent:#2d4a3e;--accent-light:#e8f0ec;
+  --accent2:#c47c2b;--accent2-light:#fdf3e3;
+  --red:#b03a2e;--red-light:#fdecea;
+  --blue:#1e3a5f;--blue-light:#e8eef7;
+  --purple:#6b21a8;--purple-light:#f3e8ff;
+  --radius:10px;--radius-sm:6px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh}
+
+.page{max-width:1120px;margin:0 auto;padding:32px 20px 120px}
+
+/* HEADER */
+.header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;padding-bottom:20px;border-bottom:1.5px solid var(--border)}
+.brand-name{font-family:'DM Serif Display',serif;font-size:24px;color:var(--accent);letter-spacing:-0.3px}
+.brand-sub{font-size:11px;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-top:2px}
+.header-meta{text-align:right;font-size:12px;color:var(--text3);line-height:1.9}
+.header-meta strong{color:var(--text);font-weight:500}
+
+/* SETTINGS */
+.settings-bar{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:12px 16px;margin-bottom:20px}
+.sg{display:flex;flex-direction:column;gap:3px}
+.sg-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3)}
+.sg input,.sg select{font-family:'DM Mono',monospace;font-size:12px;padding:5px 9px;border:0.5px solid var(--border2);border-radius:var(--radius-sm);background:var(--bg);color:var(--text);width:130px}
+.sg input:focus,.sg select:focus{outline:none;border-color:var(--accent)}
+.btn{padding:6px 14px;border-radius:var(--radius-sm);border:0.5px solid var(--border2);background:var(--surface);color:var(--text2);font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.15s;align-self:flex-end}
+.btn:hover{background:var(--surface2);border-color:var(--accent);color:var(--accent)}
+.btn-g{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-g:hover{background:#1e3329;color:#fff}
+
+/* LEGEND */
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
+.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* PHASE LABEL */
+.phase-label{font-family:'DM Serif Display',serif;font-size:12px;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin:24px 0 6px;padding-left:2px}
+.phase-label:first-of-type{margin-top:0}
+
+/* PACKAGE */
+.pkg{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden;transition:box-shadow 0.15s}
+.pkg:hover{box-shadow:0 2px 12px rgba(0,0,0,0.05)}
+.pkg-header{display:grid;grid-template-columns:26px 1fr auto 100px;gap:0;align-items:center;padding:11px 14px;cursor:pointer;user-select:none;transition:background 0.1s}
+.pkg-header:hover{background:var(--surface2)}
+.pkg-chevron{font-size:12px;color:var(--text3);transition:transform 0.2s;line-height:1}
+.pkg.open .pkg-chevron{transform:rotate(90deg)}
+.pkg-title-wrap{padding:0 10px}
+.pkg-title{font-size:13px;font-weight:600;color:var(--text)}
+.pkg-desc{font-size:11px;color:var(--text3);margin-top:1px}
+.pkg-timeline{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);background:var(--surface2);border:0.5px solid var(--border);border-radius:20px;padding:3px 9px;margin-right:10px;white-space:nowrap}
+.pkg-total-wrap{text-align:right}
+.pkg-total{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--text)}
+.pkg-sel{font-size:10px;color:var(--text3);display:block;margin-top:1px}
+
+/* TABLE */
+.pkg-body{display:none;border-top:0.5px solid var(--border)}
+.pkg.open .pkg-body{display:block}
+.col-head{display:grid;grid-template-columns:22px 1fr 100px 72px 90px 80px 72px;gap:0;padding:6px 14px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--text3);background:var(--surface2);border-bottom:0.5px solid var(--border)}
+.col-head div,.feat-row>div{padding:0 3px}
+.feat-row{display:grid;grid-template-columns:22px 1fr 100px 72px 90px 80px 72px;gap:0;align-items:start;padding:9px 14px;border-bottom:0.5px solid var(--border);cursor:pointer;transition:background 0.1s}
+.feat-row:last-child{border-bottom:none}
+.feat-row:hover{background:#fafaf7}
+.feat-row.sel{background:#f0f7f2}
+.feat-row.sel:hover{background:#e8f5ed}
+
+/* FREE ROW */
+.feat-row.free-row{background:#fffdf5;cursor:default}
+.feat-row.free-row:hover{background:#fffdf5}
+.free-badge-inline{font-size:10px;font-weight:600;color:var(--accent2);background:var(--accent2-light);border:0.5px solid #e8c080;border-radius:4px;padding:1px 6px;display:inline-block;margin-left:6px}
+
+.feat-check{display:flex;align-items:flex-start;padding-top:2px}
+.feat-check input{width:14px;height:14px;cursor:pointer;accent-color:var(--accent)}
+.fn{padding:0 6px}
+.fn-name{font-size:12px;font-weight:500;color:var(--text)}
+.fn-inc{font-size:10px;color:var(--text3);margin-top:3px;line-height:1.5}
+.fn-inc ul{padding-left:12px}
+.fn-inc li{list-style:disc;margin-bottom:1px}
+.fn-note{font-size:10px;color:var(--accent2);margin-top:3px;font-style:italic}
+
+.badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;display:inline-block;white-space:nowrap}
+.b-yes{background:var(--accent-light);color:var(--accent)}
+.b-guide{background:var(--accent2-light);color:var(--accent2)}
+.b-ai{background:var(--blue-light);color:var(--blue)}
+.b-hard{background:var(--red-light);color:var(--red)}
+
+.nc{font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);text-align:right;padding-top:2px}
+.pc{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:var(--text);text-align:right;padding-top:2px}
+.mc{font-size:10px;font-weight:600;text-align:right;padding-top:3px}
+.ml{color:var(--accent)}.mm{color:var(--accent2)}.mh{color:var(--red)}
+
+/* FREE INFO BLOCK */
+.free-info{background:var(--accent2-light);border:0.5px solid #e8c080;border-radius:var(--radius);padding:10px 14px;margin-bottom:8px;font-size:12px;color:#8a5a1a;line-height:1.7}
+.free-info strong{color:#6a420a}
+
+/* UPSELL BLOCK */
+.upsell-block{background:var(--surface);border:0.5px solid var(--border);border-left:3px solid var(--accent2);border-radius:var(--radius);padding:12px 14px;margin-top:6px}
+.upsell-title{font-size:12px;font-weight:600;color:var(--accent2);margin-bottom:6px}
+.upsell-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:0.5px solid var(--border);font-size:12px}
+.upsell-row:last-child{border-bottom:none}
+.upsell-price{font-family:'DM Mono',monospace;font-weight:500;color:var(--text)}
+
+/* STICKY SUMMARY */
+.sticky-wrap{position:sticky;bottom:0;background:var(--surface);border-top:1px solid var(--border);padding:10px 0 0;margin-top:20px;box-shadow:0 -4px 20px rgba(0,0,0,0.07);border-radius:var(--radius) var(--radius) 0 0}
+.metrics-row{display:flex;gap:8px;flex-wrap:wrap;padding:0 14px 10px}
+.metric{flex:1;min-width:95px;background:var(--bg);border-radius:var(--radius-sm);padding:8px 10px;border:0.5px solid var(--border)}
+.metric-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--text3)}
+.metric-val{font-family:'DM Mono',monospace;font-size:15px;font-weight:500;color:var(--text);margin-top:2px}
+.metric-sub{font-size:10px;color:var(--text3);margin-top:1px}
+.total-section{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--accent);border-radius:0 0 var(--radius) var(--radius)}
+.total-lbl{color:rgba(255,255,255,0.7);font-size:12px}
+.total-lbl strong{color:#fff;font-size:14px;display:block;margin-bottom:1px}
+.grand-amt{font-family:'DM Serif Display',serif;font-size:30px;color:#fff}
+.grand-range{font-size:11px;color:rgba(255,255,255,0.6);margin-top:2px;text-align:right}
+
+/* SUB BOX */
+.sub-box{background:linear-gradient(135deg,#1e3a5f 0%,#2d4a3e 100%);border-radius:var(--radius);padding:14px 16px;color:#fff;margin-top:14px}
+.sub-box-title{font-family:'DM Serif Display',serif;font-size:15px;margin-bottom:8px}
+.sub-rows{display:flex;gap:20px;flex-wrap:wrap}
+.sub-item{font-size:12px;opacity:0.9}
+.sub-item strong{display:block;font-size:13px;opacity:1;margin-bottom:1px}
+
+/* NOTE */
+.note-box{background:var(--accent2-light);border:0.5px solid #e8c080;border-radius:var(--radius);padding:11px 14px;margin-top:14px;font-size:11px;color:var(--accent2);line-height:1.7}
+.note-box strong{color:#6a420a}
+
+/* INCLUDED FREE TAG */
+.incl-tag{display:inline-block;font-size:10px;font-weight:600;background:#e8f0ec;color:var(--accent);border-radius:4px;padding:1px 6px;margin-left:6px}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+  <div>
+    <div class="brand-name">Happy Home Developers</div>
+    <div class="brand-sub">Client Quote Builder — Interactive</div>
+  </div>
+  <div class="header-meta">
+    <div>Date: <strong id="today"></strong></div>
+    <div>Dev: <strong>₹30,000/mo</strong> · Guide: <strong>₹3,000/hr · ~40 hrs</strong></div>
+    <div>Dev hourly rate: <strong>~₹170/hr</strong></div>
+  </div>
+</div>
+
+<div class="settings-bar">
+  <div class="sg"><span class="sg-label">Dev monthly (₹)</span><input id="devsal" type="number" value="30000" oninput="calc()"></div>
+  <div class="sg"><span class="sg-label">Guide rate (₹/hr)</span><input id="guidehr" type="number" value="3000" oninput="calc()"></div>
+  <div class="sg"><span class="sg-label">Margin (×)</span><input id="margin" type="number" value="2.5" step="0.05" min="1" oninput="calc()"></div>
+  <button class="btn btn-g" onclick="selectAll()">Select All</button>
+  <button class="btn" onclick="clearAll()">Clear All</button>
+</div>
+
+<div class="legend">
+  <div class="leg"><div class="leg-dot" style="background:#2d4a3e"></div>We build confidently</div>
+  <div class="leg"><div class="leg-dot" style="background:#c47c2b"></div>Guide needed</div>
+  <div class="leg"><div class="leg-dot" style="background:#1e3a5f"></div>AI-powered (API cost)</div>
+  <div class="leg"><div class="leg-dot" style="background:#b03a2e"></div>Hard / outsource</div>
+</div>
+
+<div id="container"></div>
+
+<div class="sub-box">
+  <div class="sub-box-title">Subscription Revenue — AI Elevation Generator</div>
+  <div class="sub-rows">
+    <div class="sub-item"><strong>First 2 renders</strong>Free for every user</div>
+    <div class="sub-item"><strong id="sub-render">₹99 / render</strong>Pay-per-use after free tier</div>
+    <div class="sub-item"><strong id="sub-mo">₹799 / month</strong>Unlimited renders plan</div>
+    <div class="sub-item"><strong>50 subscribers</strong>= ~₹40,000/mo recurring</div>
+    <div class="sub-item"><strong>Build fee</strong>One-time. Subscription = yours.</div>
+  </div>
+</div>
+
+<div class="note-box">
+  <strong>Pricing logic:</strong> Your cost = dev hrs × ₹170/hr + guide hrs × ₹3,000/hr + AI API estimate.
+  Client price = cost × margin. "Hard/outsource" features priced at 5× — client either drops them (saves you from overcommitting) or funds them properly so you can outsource.
+  Domain ₹1,000 for 3 years is included as a fixed pass-through cost in the domain feature.
+  First 100 projects are FREE — no infrastructure charge passed to client. Per-project pricing kicks in after 100.
+</div>
+
+<div class="sticky-wrap">
+  <div class="metrics-row">
+    <div class="metric"><div class="metric-lbl">Features</div><div class="metric-val" id="s-feat">0</div><div class="metric-sub">selected</div></div>
+    <div class="metric"><div class="metric-lbl">Dev weeks</div><div class="metric-val" id="s-weeks">0w</div><div class="metric-sub" id="s-mo">0 months</div></div>
+    <div class="metric"><div class="metric-lbl">Guide hrs</div><div class="metric-val" id="s-gh">0h</div><div class="metric-sub">of ~40h budget</div></div>
+    <div class="metric"><div class="metric-lbl">Your cost</div><div class="metric-val" id="s-cost">₹0</div><div class="metric-sub">salaries + guide</div></div>
+    <div class="metric"><div class="metric-lbl">Profit</div><div class="metric-val" id="s-profit">₹0</div><div class="metric-sub">at margin</div></div>
+  </div>
+  <div class="total-section">
+    <div>
+      <div class="total-lbl"><strong>Total Quote to Client</strong><span id="total-sub">Select features above</span></div>
+    </div>
+    <div>
+      <div class="grand-amt" id="grand-amt">₹0</div>
+      <div class="grand-range" id="grand-range">—</div>
+    </div>
+  </div>
+</div>
+
+</div>
+<script>
+document.getElementById('today').textContent = new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+
+const packages = [
+
+  /* ═══════════════════════════════ FOUNDATION ═══════════════════════════════ */
+  { id:'A', phase:'Foundation', name:'Home Page', tl:'~ 2 weeks',
+    desc:'Complete static website — always the starting point',
+    features:[
+      { n:'Website setup & hosting',
+        inc:['Vercel / Render deployment','CI/CD pipeline','SSL certificate','Custom domain config'],
+        devH:8, gH:2, can:'yes' },
+      { n:'Hero section + full home page',
+        inc:['Animated hero with clear CTA button','About company (story, vision, team section)','Photo gallery','Services overview with cards + icons','All content in one dev cycle'],
+        devH:12, gH:0, can:'yes' },
+      { n:'Client enquiry form',
+        inc:['Form with field validation','Email notification on submit','WhatsApp ping to owner on new lead'],
+        devH:10, gH:0, can:'yes' },
+      { n:'Domain setup (3 years)',
+        inc:['Domain registration — ₹1,000 actual cost included','DNS configuration','Pointing to hosting'],
+        devH:2, gH:0, can:'yes', fixedCost:1000 },
+      { n:'User authentication — Login / Signup',
+        inc:['Included directly on homepage','Email + mobile login','Google OAuth option','Clerk or Supabase Auth','JWT sessions'],
+        devH:16, gH:2, can:'yes' },
+    ]
+  },
+
+  /* ═══════════════════════════════ PROJECTS ═══════════════════════════════ */
+  { id:'B', phase:'Foundation', name:'Projects Page + Gallery + Search Engine', tl:'~ 3–4 weeks',
+    desc:'Full dynamic catalogue — 1000+ projects fetched from DB on click',
+    features:[
+      { n:'First 100 projects — FREE', free:true,
+        inc:['Infrastructure already covered','No charge to client for first 100 project cards','DB + storage setup included in build'],
+        devH:0, gH:0, can:'yes' },
+      { n:'Projects gallery (all projects)',
+        inc:['Infinite scroll / pagination','Lazy image loading','Project card grid'],
+        devH:20, gH:2, can:'yes' },
+      { n:'Individual project detail pages',
+        inc:['Dynamic routing per project','Plan details, images, specs on click','Share + enquire buttons'],
+        devH:18, gH:1, can:'yes' },
+      { n:'Category filters + smart search',
+        inc:['House size, style, budget, location filters','Multi-select UI with URL-based filter state','Autocomplete as user types','Keyword-based fast search — built in-house','No third-party dependency (Algolia removed)'],
+        devH:28, gH:0, can:'yes' },
+      { n:'Semantic search (meaning-based)',
+        inc:['Finds plans by intent — not just exact words','pgvector embeddings','OpenAI embedding API'],
+        devH:22, gH:6, can:'ai', aiMo:2000 },
+      { n:'Recommended projects by search',
+        inc:['"You may also like" section','Based on user search + viewed history','Vector similarity matching'],
+        devH:18, gH:4, can:'ai', aiMo:1500 },
+      { n:'Cloud backup per project',
+        inc:['S3 / Supabase storage per project','Admin upload interface','Images + PDFs + plan data'],
+        devH:10, gH:2, can:'yes' },
+      { n:'Project locker (save favourites)',
+        inc:['Save plans to personal locker','View saved plans anytime','Requires auth'],
+        devH:10, gH:1, can:'yes' },
+    ]
+  },
+
+  /* ═══════════════════════════════ SEO ═══════════════════════════════ */
+  { id:'C', phase:'Foundation', name:'SEO Optimisation', tl:'~ 1 week',
+    desc:'Organic traffic engine — keyword research, on-page, technical',
+    features:[
+      { n:'Technical SEO setup',
+        inc:['Meta tags, OG tags, XML sitemap','Schema markup (LocalBusiness, Project)','Core Web Vitals optimisation'],
+        devH:10, gH:1, can:'yes' },
+      { n:'Keyword research + on-page SEO',
+        inc:['Target keyword mapping per page','Title, heading, content optimisation','Competitor keyword gap analysis'],
+        devH:12, gH:2, can:'yes' },
+      { n:'Blog setup + backlink strategy',
+        inc:['2–4 blog posts (AI-assisted drafts)','Directory submissions for backlinks','Google Business Profile setup'],
+        devH:12, gH:0, can:'yes' },
+    ],
+    note:'⚡ To rank on Page 1 faster, Google Ads is strongly recommended. Ads budget + management charged separately — not in this quote.'
+  },
+
+  /* ═══════════════════════════════ CHATBOT ═══════════════════════════════ */
+  { id:'D', phase:'Add-ons', name:'AI Chatbot', tl:'~ 1 week',
+    desc:'Predefined + basic AI responses — captures leads automatically',
+    features:[
+      { n:'Predefined response flows',
+        inc:['FAQ answers hardcoded','Service enquiry flows','Routes user to right page section'],
+        devH:12, gH:1, can:'yes' },
+      { n:'Basic AI responses (minimal API)',
+        inc:['GPT-3.5 / Gemini Flash — low cost','Company-specific context injected','Fallback to predefined if unclear'],
+        devH:12, gH:0, can:'yes', aiMo:500 },
+      { n:'Lead capture via chatbot',
+        inc:['Asks name, phone, project interest','Saves to owner WhatsApp / email','No CRM — direct notification'],
+        devH:8, gH:1, can:'yes' },
+    ]
+  },
+
+  /* ═══════════════════════════════ WHATSAPP ═══════════════════════════════ */
+  { id:'E', phase:'Add-ons', name:'WhatsApp Automation', tl:'~ 1 week',
+    desc:'Auto-reply + follow-up sequences via WATI / Twilio',
+    features:[
+      { n:'Auto-reply when user fills form',
+        inc:['Instant WhatsApp to lead on form submit','Confirmation + next steps message','WATI / Twilio API'],
+        devH:10, gH:1, can:'yes', aiMo:400 },
+      { n:'Instant notification to owner',
+        inc:['Owner gets WhatsApp alert immediately','Lead name, phone, project type included','Multiple owner numbers supported'],
+        devH:6, gH:0, can:'yes' },
+      { n:'Follow-up message sequences',
+        inc:['Day 1, Day 3, Day 7 automated messages','Custom templates per sequence','Auto-stop when lead replies'],
+        devH:12, gH:1, can:'yes', aiMo:400 },
+    ]
+  },
+
+  /* ═══════════════════════════════ ECOMMERCE ═══════════════════════════════ */
+  { id:'F', phase:'Phase 1 — E-Commerce', name:'E-Commerce Platform', tl:'~ 5–6 weeks',
+    desc:'Full product store — auth handled globally, no duplication',
+    features:[
+      { n:'Home page + product catalogue',
+        inc:['Responsive storefront','Featured products + category nav','Search + filter products'],
+        devH:18, gH:1, can:'yes' },
+      { n:'Payment gateway',
+        inc:['Razorpay integration','Order confirmation + invoice','Refund flow'],
+        devH:16, gH:2, can:'yes' },
+      { n:'Admin page + product management',
+        inc:['Add / edit / delete products','Price and stock control','Order management dashboard'],
+        devH:20, gH:2, can:'yes' },
+      { n:'Product page',
+        inc:['Full product detail view','Image gallery, specs, reviews stub','Add to cart'],
+        devH:12, gH:1, can:'yes' },
+      { n:'Dynamic product cards + suggestions',
+        inc:['Cards update by search term','Related products section','Trending based on views'],
+        devH:16, gH:3, can:'guide', aiMo:1000 },
+      { n:'Inventory management',
+        inc:['Real-time stock tracking','Low stock alerts','Bulk update support'],
+        devH:18, gH:2, can:'yes' },
+      { n:'Add products (bulk upload)',
+        inc:['CSV import for bulk products','Image upload per product','Draft / publish state'],
+        devH:12, gH:1, can:'yes' },
+      { n:'Google Analytics (add-on)',
+        inc:['GA4 + Hotjar setup','Conversion funnel tracking','User behaviour heatmaps'],
+        devH:8, gH:0, can:'yes' },
+    ]
+  },
+
+  /* ═══════════════════════════════ 2D CANVAS ═══════════════════════════════ */
+  { id:'H', phase:'Phase 2 — AI Playground', name:'2D Floor Plan Canvas', tl:'Minimum ~ 3 weeks',
+    desc:'Draw walls, rooms, export — core playground. Basic tools included free.',
+    features:[
+      { n:'Core drawing tools',
+        inc:[
+          'Draw walls, doors, windows, staircases',
+          'Snap-to-grid canvas (Fabric.js / Konva)',
+          'Room area auto-calculation',
+          'Predefined templates × 5 (1BHK, 2BHK, 3BHK, Duplex, Villa)',
+          'Export: PNG / PDF / JSON',
+          '⬆ All basic tools bundled — charged as one moderate price'
+        ],
+        devH:Math.round((40+20+10+10)*0.7), gH:4, can:'yes',
+        note:'Room labels, ruler/measurements, advanced tools — included in dev scope, not separately charged. 70% of original cost.' },
+      { n:'Suggest floor plan by measurements (DB match)',
+        inc:['Enter plot dimensions → matching plans from 1000+ DB','Filter by style, budget, BHK','One-click load to canvas'],
+        devH:18, gH:4, can:'guide' },
+      { n:'Multiple floors (G, G+1, G+2)',
+        inc:['Switch between floor levels','Copy floor plan up to next floor','Floor-wise view toggle'],
+        devH:14, gH:2, can:'yes',
+        note:'Included here AND reflected in 3D conversion — same charge, no duplication.' },
+    ]
+  },
+
+  /* ═══════════════════════════════ 3D ═══════════════════════════════ */
+  { id:'I', phase:'Phase 2 — AI Playground', name:'3D Conversion', tl:'~ 4 weeks',
+    desc:'2D → 3D. Walkable, colour-editable, furniture-ready. Your strongest differentiator.',
+    features:[
+      { n:'Convert 2D plan to basic 3D layout',
+        inc:['Three.js wall extrusion from 2D drawing','Roof auto-generation','Realistic scale and proportions'],
+        devH:50, gH:6, can:'yes' },
+      { n:'Customize wall colours',
+        inc:['Colour picker per room','Live update in 3D view','Save and reload colour schemes'],
+        devH:16, gH:2, can:'yes' },
+      { n:'Add furniture (bed, sofa, table etc.)',
+        inc:['Drag-drop from asset library in 3D','Position, rotate furniture','20+ furniture items'],
+        devH:20, gH:3, can:'yes' },
+      { n:'Basic interactive 3D walkthrough',
+        inc:['First-person camera (WASD + touch)','360° orbit view','Room-to-room navigation'],
+        devH:20, gH:4, can:'yes' },
+      { n:'Multiple floors in 3D (G, G+1, G+2)',
+        inc:['Floor switch in 3D viewer','Stacked floor visualization','Same data as 2D floors — no extra dev needed'],
+        devH:14, gH:2, can:'yes',
+        note:'Shared scope with 2D canvas floors feature.' },
+    ]
+  },
+
+  /* ═══════════════════════════════ AI AGENT ═══════════════════════════════ */
+  { id:'J', phase:'Phase 2 — AI Playground', name:'Playground AI Agent (Research Work)', tl:'~ 5 weeks+',
+    desc:'AI-assisted drawing — research heavy, experimental feature',
+    features:[
+      { n:'AI draw assistant (walls, windows, doors)',
+        inc:['Text / voice command → draws on canvas','e.g. "Add a door on north wall"','GPT-4o function calling + canvas API'],
+        devH:40, gH:12, can:'ai', aiMo:5000 },
+      { n:'AI furniture + colour advisor',
+        inc:['"Suggest furniture for this room"','Style-based recommendations','Applies to 3D view live'],
+        devH:20, gH:5, can:'ai', aiMo:1500 },
+    ]
+  },
+
+  /* ═══════════════════════════════ ELEVATION ═══════════════════════════════ */
+  { id:'K', phase:'Phase 2 — AI Playground', name:'Elevation Plan Generation', tl:'~ 2–3 weeks',
+    desc:'SUBSCRIPTION REVENUE ENGINE — AI renders after 2 free',
+    features:[
+      { n:'AI elevation image generator',
+        inc:['Stable Diffusion via Replicate API','Front + side elevation from 3D model','First 2 renders free per user','Billing logic handled via E-Commerce payment module'],
+        devH:20, gH:6, can:'ai', aiMo:6000 },
+      { n:'Realistic AI elevation (ControlNet — advanced)',
+        inc:['Architecture-specific fine-tuned model','Photo-realistic renders','Requires GPU server (RunPod / AWS)'],
+        devH:10, gH:20, can:'hard', aiMo:15000 },
+    ]
+  },
+];
+
+/* Per-project upsell data */
+const perProjectPricing = [
+  { range:'101 – 200 projects', price:'₹50 / project card', note:'~₹5,000 for 100 cards' },
+  { range:'201 – 500 projects', price:'₹40 / project card', note:'~₹12,000 for 300 cards' },
+  { range:'500+ projects', price:'₹30 / project card', note:'Volume discount' },
+  { range:'Hosting scale-up', price:'₹2,000 – ₹5,000/mo', note:'When traffic needs upgrade' },
+];
+
+let sel = {};
+packages.forEach(p => p.features.forEach((_,i) => sel[p.id+i] = false));
+
+const fmt = n => '₹' + Math.round(n).toLocaleString('en-IN');
+const fmtH = h => h + 'h';
+
+function canBadge(c){
+  const m = {yes:['b-yes','We build'],guide:['b-guide','Guide needed'],ai:['b-ai','AI-powered'],hard:['b-hard','Hard/costly']};
+  const [cls,lbl] = m[c]||m.yes;
+  return `<span class="badge ${cls}">${lbl}</span>`;
+}
+function getM(c,base){ return c==='yes'?base:c==='guide'?base+0.5:c==='ai'?base+1:base+2.5; }
+function mxCls(m){ return m>=4?'mh':m>=3?'mm':'ml'; }
+
+function buildUI(){
+  const cont = document.getElementById('container');
+  cont.innerHTML = '';
+  let lastPhase = '';
+
+  packages.forEach(p => {
+    if(p.phase !== lastPhase){
+      const pl = document.createElement('div');
+      pl.className = 'phase-label';
+      pl.textContent = p.phase;
+      cont.appendChild(pl);
+      lastPhase = p.phase;
+
+      // Per-project pricing block after Projects package
+      if(p.phase === 'Foundation' && p.id === 'B'){
+        // inject after building package B
+      }
+    }
+
+    const div = document.createElement('div');
+    div.className = 'pkg' + (['A','B','H','I'].includes(p.id) ? ' open' : '');
+    div.id = 'pkg-' + p.id;
+    const tlChip = p.tl ? `<span class="pkg-timeline">${p.tl}</span>` : '';
+    const noteHtml = p.note ? `<div style="font-size:11px;color:var(--accent2);margin-top:6px;padding:0 14px 8px;font-style:italic">⚡ ${p.note}</div>` : '';
+
+    div.innerHTML = `
+      <div class="pkg-header" onclick="togglePkg('${p.id}')">
+        <span class="pkg-chevron">›</span>
+        <div class="pkg-title-wrap">
+          <div class="pkg-title">${p.name}</div>
+          <div class="pkg-desc">${p.desc}</div>
+        </div>
+        ${tlChip}
+        <div class="pkg-total-wrap">
+          <div class="pkg-total" id="ptotal-${p.id}">—</div>
+          <span class="pkg-sel" id="pcount-${p.id}"></span>
+        </div>
+      </div>
+      <div class="pkg-body">
+        <div class="col-head">
+          <div></div><div>Feature & What's Included</div>
+          <div style="text-align:center">Deliverability</div>
+          <div style="text-align:right">Hours</div>
+          <div style="text-align:right">Your cost</div>
+          <div style="text-align:right">Client price</div>
+          <div style="text-align:right">Margin</div>
+        </div>
+        <div id="pbody-${p.id}"></div>
+        ${noteHtml}
+      </div>`;
+    cont.appendChild(div);
+
+    // Per-project upsell after Package B
+    if(p.id === 'B'){
+      const up = document.createElement('div');
+      up.className = 'upsell-block';
+      up.innerHTML = `<div class="upsell-title">Per-Project Pricing (after free 100)</div>
+        ${perProjectPricing.map(r=>`<div class="upsell-row"><span>${r.range} <span style="color:var(--text3);font-size:10px">${r.note}</span></span><span class="upsell-price">${r.price}</span></div>`).join('')}`;
+      cont.appendChild(up);
+    }
+
+    const body = div.querySelector('#pbody-'+p.id);
+    p.features.forEach((f,i) => {
+      const id = p.id + i;
+      const row = document.createElement('div');
+      row.className = 'feat-row' + (f.free ? ' free-row' : '');
+      row.id = 'row-' + id;
+      if(!f.free) row.onclick = () => toggleFeat(id);
+
+      const incHtml = f.inc?.length
+        ? `<div class="fn-inc"><ul>${f.inc.map(x=>`<li>${x}</li>`).join('')}</ul></div>`
+        : '';
+      const noteHtml = f.note ? `<div class="fn-note">${f.note}</div>` : '';
+      const freeBadge = f.free ? `<span class="free-badge-inline">FREE</span>` : '';
+      const checkHtml = f.free
+        ? `<div></div>`
+        : `<div class="feat-check"><input type="checkbox" id="chk-${id}" onclick="event.stopPropagation();toggleFeat('${id}')"></div>`;
+
+      row.innerHTML = `
+        ${checkHtml}
+        <div class="fn">
+          <div class="fn-name">${f.n}${freeBadge}</div>
+          ${incHtml}${noteHtml}
+        </div>
+        <div style="text-align:center;padding-top:2px">${f.free ? '<span class="badge b-yes">Included</span>' : canBadge(f.can)}</div>
+        <div class="nc" id="hrs-${id}">${f.free ? '—' : '—'}</div>
+        <div class="nc" id="cost-${id}">${f.free ? 'No charge' : '—'}</div>
+        <div class="pc" id="price-${id}">${f.free ? 'Free' : '—'}</div>
+        <div class="mc" id="mx-${id}">${f.free ? '—' : '—'}</div>`;
+      body.appendChild(row);
+    });
+  });
+}
+
+function togglePkg(id){
+  document.getElementById('pkg-'+id).classList.toggle('open');
+}
+function toggleFeat(id){
+  sel[id] = !sel[id];
+  const chk = document.getElementById('chk-'+id);
+  if(chk) chk.checked = sel[id];
+  document.getElementById('row-'+id)?.classList.toggle('sel', sel[id]);
+  calc();
+}
+function selectAll(){
+  packages.forEach(p => p.features.forEach((f,i) => {
+    if(f.free) return;
+    const id = p.id+i; sel[id]=true;
+    const chk=document.getElementById('chk-'+id); if(chk) chk.checked=true;
+    document.getElementById('row-'+id)?.classList.add('sel');
+    document.getElementById('pkg-'+p.id)?.classList.add('open');
+  }));
+  calc();
+}
+function clearAll(){
+  packages.forEach(p => p.features.forEach((_,i) => {
+    const id=p.id+i; sel[id]=false;
+    const chk=document.getElementById('chk-'+id); if(chk) chk.checked=false;
+    document.getElementById('row-'+id)?.classList.remove('sel');
+  }));
+  calc();
+}
+
+function calc(){
+  const devSal  = parseFloat(document.getElementById('devsal').value)||30000;
+  const guideHr = parseFloat(document.getElementById('guidehr').value)||3000;
+  const baseM   = parseFloat(document.getElementById('margin').value)||2.5;
+  const devHrRate = devSal / (22*8);
+
+  packages.forEach(p => {
+    let pkgPrice=0, pkgSel=0;
+    p.features.forEach((f,i) => {
+      const id = p.id+i;
+      if(f.free){
+        document.getElementById('hrs-'+id).textContent='—';
+        document.getElementById('cost-'+id).textContent='No charge';
+        document.getElementById('price-'+id).textContent='Free';
+        document.getElementById('mx-'+id).innerHTML='—';
+        return;
+      }
+      const aiMo = f.aiMo||0;
+      const fixedCost = f.fixedCost||0;
+      const devCost = f.devH * devHrRate;
+      const guideCost = (f.gH||0) * guideHr;
+      const cost = devCost + guideCost + aiMo + fixedCost;
+      const mult = getM(f.can, baseM);
+      const price = (cost * mult) + fixedCost; // pass domain cost through at cost
+
+      document.getElementById('hrs-'+id).textContent = fmtH((f.devH||0)+(f.gH||0));
+      document.getElementById('cost-'+id).textContent = fmt(cost);
+      document.getElementById('price-'+id).textContent = fmt(price);
+      document.getElementById('mx-'+id).innerHTML = `<span class="${mxCls(mult)}">${mult.toFixed(1)}×</span>`;
+
+      if(sel[id]){ pkgSel++; pkgPrice+=price; }
+    });
+    document.getElementById('ptotal-'+p.id).textContent = pkgSel>0 ? fmt(pkgPrice) : '—';
+    document.getElementById('pcount-'+p.id).textContent = pkgSel>0 ? pkgSel+' selected' : '';
+  });
+
+  let totalFeat=0,totalDevH=0,totalGH=0,totalCost=0,totalPrice=0;
+  packages.forEach(p => p.features.forEach((f,i)=>{
+    const id=p.id+i;
+    if(!sel[id]||f.free) return;
+    const aiMo=f.aiMo||0, fixedCost=f.fixedCost||0;
+    const devHrRate2 = (parseFloat(document.getElementById('devsal').value)||30000)/(22*8);
+    const guideHr2 = parseFloat(document.getElementById('guidehr').value)||3000;
+    const cost=(f.devH*devHrRate2)+((f.gH||0)*guideHr2)+aiMo+fixedCost;
+    const price=cost*getM(f.can,baseM)+fixedCost;
+    totalFeat++;totalDevH+=f.devH;totalGH+=(f.gH||0);totalCost+=cost;totalPrice+=price;
+  }));
+
+  const weeks=Math.ceil(totalDevH/40);
+  const months=(weeks/4.33).toFixed(1);
+  document.getElementById('s-feat').textContent=totalFeat;
+  document.getElementById('s-weeks').textContent=weeks>0?weeks+'w':'0w';
+  document.getElementById('s-mo').textContent=months>0?months+' months':'0 months';
+  document.getElementById('s-gh').textContent=totalGH+'h';
+  document.getElementById('s-cost').textContent=fmt(totalCost);
+  document.getElementById('s-profit').textContent=fmt(totalPrice-totalCost);
+  document.getElementById('grand-amt').textContent=fmt(totalPrice);
+  document.getElementById('grand-range').textContent=totalFeat>0?`range: ${fmt(totalPrice*0.9)} – ${fmt(totalPrice*1.1)}`:'—';
+  document.getElementById('total-sub').textContent=totalFeat>0?` · ${totalFeat} features · ${weeks}w · cost ${fmt(totalCost)}`:'Select features above';
+
+  // Sub pricing
+  const rp = Math.round(baseM*40);
+  document.getElementById('sub-render').textContent=`₹${rp}/render`;
+  document.getElementById('sub-mo').textContent=`₹${rp*8}/month`;
+}
+
+buildUI();
+calc();
+</script>
+</body>
+</html>

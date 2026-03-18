@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Home Developers — Project Proposal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#faf9f6;
+  --surface:#ffffff;
+  --surface2:#f4f2ec;
+  --surface3:#edeae0;
+  --border:#e2ddd3;
+  --border2:#d0cbbf;
+  --text:#18160f;
+  --text2:#534f44;
+  --text3:#9c9788;
+  --green:#1e4d3a;
+  --green-light:#e5efe9;
+  --green-mid:#2d6b52;
+  --amber:#96580a;
+  --amber-light:#fdf1e0;
+  --blue:#163259;
+  --blue-light:#e6edf7;
+  --red:#8c2a22;
+  --red-light:#fcecea;
+  --gold:#b8860b;
+  --r:12px;--rs:7px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.65;-webkit-font-smoothing:antialiased}
+
+/* ── PAGE ── */
+.page{max-width:960px;margin:0 auto;padding:40px 24px 140px}
+
+/* ── HERO HEADER ── */
+.hero{text-align:center;padding:48px 20px 36px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.hero-eyebrow{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-bottom:14px}
+.hero-title{font-family:'Playfair Display',serif;font-size:36px;font-weight:500;color:var(--green);line-height:1.15;margin-bottom:10px}
+.hero-sub{font-size:14px;color:var(--text2);max-width:520px;margin:0 auto 24px;line-height:1.7}
+.hero-meta{display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
+.hero-meta-item{text-align:center}
+.hero-meta-label{font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3)}
+.hero-meta-val{font-size:13px;font-weight:500;color:var(--text);margin-top:2px}
+
+/* ── CONTROLS ── */
+.controls{display:flex;gap:10px;justify-content:flex-end;margin-bottom:20px;flex-wrap:wrap}
+.ctrl-btn{font-family:'Inter',sans-serif;font-size:12px;font-weight:500;padding:7px 16px;border-radius:var(--rs);border:1px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;transition:all .15s}
+.ctrl-btn:hover{background:var(--surface2);border-color:var(--green);color:var(--green)}
+.ctrl-btn.primary{background:var(--green);color:#fff;border-color:var(--green)}
+.ctrl-btn.primary:hover{background:#163329}
+
+/* ── PHASE HEADING ── */
+.phase-heading{display:flex;align-items:center;gap:12px;margin:32px 0 10px}
+.phase-heading:first-of-type{margin-top:0}
+.phase-line{flex:1;height:1px;background:var(--border)}
+.phase-label-text{font-family:'Playfair Display',serif;font-size:13px;color:var(--text3);white-space:nowrap;letter-spacing:0.04em}
+
+/* ── PACKAGE CARD ── */
+.pkg{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden;transition:box-shadow .2s,border-color .2s}
+.pkg:hover{box-shadow:0 4px 18px rgba(0,0,0,0.07)}
+.pkg.has-sel{border-color:#a8d0bc}
+.pkg-header{display:flex;align-items:center;gap:0;padding:14px 18px;cursor:pointer;user-select:none;transition:background .1s}
+.pkg-header:hover{background:var(--surface2)}
+.pkg-chev{font-size:11px;color:var(--text3);transition:transform .2s;margin-right:12px;flex-shrink:0}
+.pkg.open .pkg-chev{transform:rotate(90deg)}
+.pkg-info{flex:1}
+.pkg-name{font-size:14px;font-weight:600;color:var(--text)}
+.pkg-tagline{font-size:11px;color:var(--text3);margin-top:2px}
+.pkg-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.pkg-tl-chip{font-size:11px;font-weight:500;color:var(--text3);background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:3px 11px;white-space:nowrap}
+.pkg-price-wrap{text-align:right;min-width:90px}
+.pkg-price{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;color:var(--text)}
+.pkg-feat-count{font-size:10px;color:var(--text3);margin-top:2px}
+
+/* ── PACKAGE BODY ── */
+.pkg-body{display:none;border-top:1px solid var(--border)}
+.pkg.open .pkg-body{display:block}
+
+/* column heads */
+.tbl-head{display:grid;grid-template-columns:26px 1fr 130px 100px;padding:7px 18px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3)}
+
+/* feature row */
+.feat{display:grid;grid-template-columns:26px 1fr 130px 100px;padding:12px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s;align-items:start}
+.feat:last-child{border-bottom:none}
+.feat:hover{background:#fafaf5}
+.feat.sel{background:#f0f7f3}
+.feat.sel:hover{background:#e8f4ed}
+.feat.free-row{background:#fffcf4;cursor:default}
+.feat.free-row:hover{background:#fffcf4}
+
+/* checkbox col */
+.feat-cb{display:flex;align-items:flex-start;padding-top:2px}
+.feat-cb input{width:15px;height:15px;cursor:pointer;accent-color:var(--green);flex-shrink:0}
+
+/* name + detail col */
+.feat-detail{padding:0 12px}
+.feat-name{font-size:13px;font-weight:500;color:var(--text);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.feat-includes{margin-top:5px}
+.feat-includes li{font-size:11px;color:var(--text3);list-style:disc;margin-left:14px;line-height:1.6}
+.feat-note{font-size:11px;color:var(--amber);margin-top:4px;font-style:italic}
+
+/* timeline col */
+.feat-tl{font-size:12px;color:var(--text2);padding-top:2px}
+.tl-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;color:var(--green);background:var(--green-light);border-radius:20px;padding:2px 9px;white-space:nowrap}
+.tl-badge-amber{color:var(--amber);background:var(--amber-light)}
+.tl-badge-blue{color:var(--blue);background:var(--blue-light)}
+.tl-badge-red{color:var(--red);background:var(--red-light)}
+
+/* price col */
+.feat-price{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;color:var(--text);text-align:right;padding-top:2px}
+.feat-price.free{color:var(--green);font-size:12px}
+.feat-price.included{color:var(--text3);font-size:11px;font-style:italic}
+
+/* badges */
+.badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;white-space:nowrap}
+.b-free{background:var(--amber-light);color:var(--amber);border:1px solid #e8c07a}
+.b-sub{background:#f0e8ff;color:#5b21b6}
+.b-incl{background:var(--green-light);color:var(--green)}
+
+/* ── PER-PROJECT BLOCK ── */
+.per-proj-block{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--amber);border-radius:var(--r);padding:14px 18px;margin-top:8px;margin-bottom:4px}
+.per-proj-title{font-size:12px;font-weight:600;color:var(--amber);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.per-proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.per-proj-card{background:var(--surface2);border-radius:var(--rs);padding:10px 12px;border:1px solid var(--border)}
+.per-proj-range{font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px}
+.per-proj-price{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:500;color:var(--green)}
+.per-proj-note{font-size:10px;color:var(--text3);margin-top:2px}
+
+/* ── SEO NOTE ── */
+.seo-note{background:var(--amber-light);border:1px solid #e8c07a;border-radius:var(--rs);padding:10px 14px;margin:0 18px 12px;font-size:11px;color:var(--amber);line-height:1.6}
+
+/* ── SUBSCRIPTION BOX ── */
+.sub-box{background:var(--green);border-radius:var(--r);padding:20px 22px;margin-top:16px;color:#fff}
+.sub-box-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:500;margin-bottom:4px}
+.sub-box-sub{font-size:12px;opacity:.75;margin-bottom:16px}
+.sub-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.sub-card{background:rgba(255,255,255,.12);border-radius:var(--rs);padding:12px 14px}
+.sub-card-label{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;opacity:.7;margin-bottom:4px}
+.sub-card-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500}
+.sub-card-desc{font-size:11px;opacity:.7;margin-top:3px}
+
+/* ── DISCLAIMER ── */
+.disclaimer{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:12px 16px;margin-top:14px;font-size:11px;color:var(--text3);line-height:1.8}
+.disclaimer strong{color:var(--text2)}
+
+/* ── STICKY FOOTER ── */
+.sticky-footer{position:sticky;bottom:0;background:var(--surface);border-top:1px solid var(--border);box-shadow:0 -6px 24px rgba(0,0,0,.08);border-radius:var(--r) var(--r) 0 0}
+.footer-inner{max-width:960px;margin:0 auto;padding:12px 24px}
+.footer-metrics{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.f-metric{flex:1;min-width:90px;background:var(--bg);border:1px solid var(--border);border-radius:var(--rs);padding:7px 10px}
+.f-metric-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text3)}
+.f-metric-val{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:500;color:var(--text);margin-top:2px}
+.f-metric-sub{font-size:10px;color:var(--text3)}
+.footer-total{display:flex;justify-content:space-between;align-items:center;background:var(--green);border-radius:var(--rs);padding:12px 18px}
+.footer-total-left{color:rgba(255,255,255,.75);font-size:12px}
+.footer-total-left strong{color:#fff;font-size:14px;display:block;margin-bottom:2px}
+.footer-total-left span{font-size:11px}
+.footer-grand{font-family:'Playfair Display',serif;font-size:30px;color:#fff;font-weight:500}
+.footer-grand-sub{font-size:11px;color:rgba(255,255,255,.55);margin-top:2px;text-align:right}
+
+/* ── PRINT / SHARE BAR ── */
+.action-bar{display:flex;gap:8px;justify-content:flex-end;margin-bottom:16px}
+.action-btn{font-family:'Inter',sans-serif;font-size:11px;font-weight:500;padding:6px 14px;border-radius:var(--rs);border:1px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;transition:all .15s}
+.action-btn:hover{background:var(--surface2);color:var(--green);border-color:var(--green)}
+@media print{.sticky-footer,.controls,.action-bar{display:none!important}.pkg-body{display:block!important}}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Project Proposal</div>
+  <div class="hero-title">Happy Home Developers</div>
+  <div class="hero-sub">Custom architectural web platform — select the features that fit your vision and budget. Prices update live as you choose.</div>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><div class="hero-meta-label">Prepared for</div><div class="hero-meta-val">Architectural Client</div></div>
+    <div class="hero-meta-item"><div class="hero-meta-label">Date</div><div class="hero-meta-val" id="today"></div></div>
+    <div class="hero-meta-item"><div class="hero-meta-label">Valid for</div><div class="hero-meta-val">30 days</div></div>
+    <div class="hero-meta-item"><div class="hero-meta-label">Currency</div><div class="hero-meta-val">INR (₹)</div></div>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <button class="ctrl-btn" onclick="clearAll()">Clear all</button>
+  <button class="ctrl-btn primary" onclick="selectAll()">Select all features</button>
+</div>
+
+<div id="container"></div>
+
+<!-- SUBSCRIPTION -->
+<div class="sub-box">
+  <div class="sub-box-title">AI Elevation Generator — Subscription Model</div>
+  <div class="sub-box-sub">Included with the AI Playground package · Revenue model activates after free renders</div>
+  <div class="sub-cards">
+    <div class="sub-card"><div class="sub-card-label">Free tier</div><div class="sub-card-val">2 renders</div><div class="sub-card-desc">Every user gets 2 free elevation renders</div></div>
+    <div class="sub-card"><div class="sub-card-label">Pay per render</div><div class="sub-card-val">₹99</div><div class="sub-card-desc">Per render after free tier</div></div>
+    <div class="sub-card"><div class="sub-card-label">Monthly plan</div><div class="sub-card-val">₹799/mo</div><div class="sub-card-desc">Unlimited renders subscription</div></div>
+    <div class="sub-card"><div class="sub-card-label">Your upside</div><div class="sub-card-val">Recurring</div><div class="sub-card-desc">50 subscribers = ~₹40,000/month</div></div>
+  </div>
+</div>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  <strong>What's included in this quote:</strong> All development, deployment, and initial setup. Domain registration (₹1,000 for 3 years) is included at actual cost. First 100 project cards are free — no charge for initial setup.
+  <br><strong>Not included:</strong> Ongoing hosting fees (₹800–₹3,000/month depending on traffic), WhatsApp API subscription (WATI/Twilio ~₹3,000–₹8,000/month), AI API usage beyond free tiers, Google Ads budget.
+  <br><strong>Timeline:</strong> Shown per feature is estimated delivery time starting from project kickoff. Phases run sequentially.
+</div>
+
+<!-- STICKY FOOTER -->
+<div class="sticky-footer">
+  <div class="footer-inner">
+    <div class="footer-metrics">
+      <div class="f-metric"><div class="f-metric-label">Features</div><div class="f-metric-val" id="s-feat">0</div><div class="f-metric-sub">selected</div></div>
+      <div class="f-metric"><div class="f-metric-label">Est. timeline</div><div class="f-metric-val" id="s-tl">—</div><div class="f-metric-sub" id="s-tl-sub">from kickoff</div></div>
+      <div class="f-metric"><div class="f-metric-label">One-time build</div><div class="f-metric-val" id="s-onetime">₹0</div><div class="f-metric-sub">development fee</div></div>
+      <div class="f-metric"><div class="f-metric-label">Per-project (post-100)</div><div class="f-metric-val" id="s-perproj">—</div><div class="f-metric-sub">if applicable</div></div>
+    </div>
+    <div class="footer-total">
+      <div class="footer-total-left">
+        <strong>Total Investment</strong>
+        <span id="footer-sub">Select features to see your quote</span>
+      </div>
+      <div>
+        <div class="footer-grand" id="grand-amt">₹0</div>
+        <div class="footer-grand-sub" id="grand-note">one-time build fee</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// ─── PRICING ENGINE ──────────────────────────────────────────
+// Dev: ₹30,000/mo → ₹170.45/hr (30000/22/8)
+// Guide: ₹3,000/hr (used internally, not shown to client)
+// Margin: 1.55× on dev cost, guide cost passed at 1.55× too
+// AI monthly cost added at 1.55× for client-facing price
+
+const MARGIN = 1.55;
+const DEV_HR = 30000 / (22 * 8);   // ~₹170
+const GUIDE_HR = 3000;
+
+function price(devH, gH, aiMo, fixedCost, can) {
+  const base = (devH * DEV_HR) + (gH * GUIDE_HR) + (aiMo || 0);
+  const fc = fixedCost || 0;
+  // hard/outsource: 1.55 * 2 = ~3.1× to signal high risk
+  const mult = can === 'hard' ? MARGIN * 2 : MARGIN;
+  return Math.round(base * mult + fc);
+}
+
+const fmt = n => '₹' + n.toLocaleString('en-IN');
+
+// Timeline utility
+function tlBadge(tl, can) {
+  if (!tl) return '—';
+  const cls = can === 'hard' ? 'tl-badge-red' : can === 'ai' ? 'tl-badge-blue' : can === 'guide' ? 'tl-badge-amber' : '';
+  return `<span class="tl-badge ${cls}">${tl}</span>`;
+}
+
+// ─── DATA ────────────────────────────────────────────────────
+const packages = [
+
+  // ══ FOUNDATION ══
+  { id:'A', phase:'Foundation', name:'Home Page', tl:'2 weeks',
+    tagline:'Your digital storefront — everything a visitor needs to trust and contact you',
+    features:[
+      { n:'Website setup & hosting',
+        tl:'3 days',
+        inc:['Cloud deployment (AWS/Digital Ocean)','SSL certificate & custom domain config','Automated deployment pipeline'],
+        devH:8, gH:2, can:'yes' },
+      { n:'Full home page',
+        tl:'1 week',
+        inc:['Hero section with clear call-to-action','About the company — story, vision, team','Photo gallery','Services overview with cards & icons','Mobile-responsive across all devices'],
+        devH:12, gH:0, can:'yes' },
+      { n:'Client enquiry form',
+        tl:'3 days',
+        inc:['Smart form with validation','Email notification on every submission','Instant WhatsApp ping to your team'],
+        devH:10, gH:0, can:'yes' },
+      { n:'Domain setup — 3 years',
+        tl:'1 day',
+        inc:['Domain registration for 3 years','DNS configuration','Pointing to live hosting'],
+        devH:2, gH:0, can:'yes', fixedCost:1000 },
+      { n:'User authentication — Login & Signup',
+        tl:'4 days',
+        inc:['Email + mobile number login','Google one-tap sign in','Secure sessions (JWT)','Available globally across the platform'],
+        devH:16, gH:2, can:'yes' },
+    ]
+  },
+
+  // ══ PROJECTS GALLERY ══
+  { id:'B', phase:'Foundation', name:'Projects Gallery & Search', tl:'3–4 weeks',
+    tagline:'Showcase your full portfolio — searchable, filterable, always impressive',
+    features:[
+      { n:'First 100 project cards', free:true,
+        tl:'Included',
+        inc:['Infrastructure setup covered','Database + storage for 100 projects','Upload interface for your team','No charge for the first 100'],
+        devH:0, gH:0, can:'yes' },
+      { n:'Full projects gallery',
+        tl:'1 week',
+        inc:['Display all projects from database','Smooth infinite scroll & pagination','Fast image loading (lazy load)','Grid layout with project cards'],
+        devH:20, gH:2, can:'yes' },
+      { n:'Individual project pages',
+        tl:'1 week',
+        inc:['Dedicated page per project','Plan details, photos, specifications','Share link + direct enquiry button','Clean URL structure (e.g. /projects/villa-3bhk)'],
+        devH:18, gH:1, can:'yes' },
+      { n:'Category filters + smart search',
+        tl:'1 week',
+        inc:['Filter by house size, style, budget, location','Multi-select filter UI','Search with instant autocomplete','URL-shareable filter state'],
+        devH:28, gH:0, can:'yes' },
+      { n:'Semantic search — understands meaning',
+        tl:'1 week',
+        inc:['Finds plans by intent, not just keywords','E.g. "open kitchen with large living" finds matching plans','AI-powered vector search'],
+        devH:22, gH:6, can:'ai', aiMo:2000 },
+      { n:'Recommended projects',
+        tl:'4–5 days',
+        inc:['"You may also like" section on every project page','Based on what user viewed and searched','Smart similarity matching'],
+        devH:18, gH:4, can:'ai', aiMo:1500 },
+      { n:'Cloud backup per project',
+        tl:'3 days',
+        inc:['All project files backed up to cloud','Images, PDFs, plan data secured','Easy restore if anything goes wrong'],
+        devH:10, gH:2, can:'yes' },
+      { n:'Project locker — save favourites',
+        tl:'3 days',
+        inc:['Users save plans they love','Personal collection in their account','Access saved plans anytime'],
+        devH:10, gH:1, can:'yes' },
+    ],
+    perProject: true
+  },
+
+  // ══ SEO ══
+  { id:'C', phase:'Foundation', name:'SEO Optimisation', tl:'1 week',
+    tagline:'Get found on Google — keyword-targeted, technically sound',
+    note:'To rank on Page 1 quickly, Google Ads is strongly recommended. Ads budget is separate — we can set it up for you at an additional management fee.',
+    features:[
+      { n:'Technical SEO setup',
+        tl:'2 days',
+        inc:['Meta tags, page titles, descriptions','XML sitemap + robots.txt','Schema markup for local business & projects','Core Web Vitals performance tuning'],
+        devH:10, gH:1, can:'yes' },
+      { n:'Keyword research + on-page SEO',
+        tl:'3 days',
+        inc:['Target keyword mapping for every page','Heading and content structure optimised','Competitor keyword gap analysis','Internal linking strategy'],
+        devH:12, gH:2, can:'yes' },
+      { n:'Blog setup + backlink strategy',
+        tl:'2 days',
+        inc:['2–4 SEO-optimised blog posts','Business directory submissions','Google Business Profile setup & optimisation'],
+        devH:12, gH:0, can:'yes' },
+    ]
+  },
+
+  // ══ CHATBOT ══
+  { id:'D', phase:'Add-ons', name:'AI Chatbot', tl:'1 week',
+    tagline:'Always-on assistant that captures leads and guides visitors 24/7',
+    features:[
+      { n:'Predefined conversation flows',
+        tl:'3 days',
+        inc:['FAQ answers for common questions','Service enquiry flows','Guides visitors to the right page or project'],
+        devH:12, gH:1, can:'yes' },
+      { n:'Basic AI responses',
+        tl:'3 days',
+        inc:['Smart AI answers (low API cost)','Trained on your company information','Falls back to predefined if unsure'],
+        devH:12, gH:0, can:'yes', aiMo:500 },
+      { n:'Lead capture via chatbot',
+        tl:'2 days',
+        inc:['Asks visitor name, phone, project interest','Sends details straight to your WhatsApp','No CRM needed — direct to your phone'],
+        devH:8, gH:1, can:'yes' },
+    ]
+  },
+
+  // ══ WHATSAPP ══
+  { id:'E', phase:'Add-ons', name:'WhatsApp Automation', tl:'1 week',
+    tagline:'Respond instantly, follow up automatically — never lose a lead',
+    features:[
+      { n:'Auto-reply when form is submitted',
+        tl:'2 days',
+        inc:['Instant WhatsApp message to the lead','Confirmation + next steps sent automatically','Uses WATI / Twilio API'],
+        devH:10, gH:1, can:'yes', aiMo:400 },
+      { n:'Instant owner notification',
+        tl:'1 day',
+        inc:['You get an immediate WhatsApp alert','Lead name, phone, and project type included','Works for multiple team members'],
+        devH:6, gH:0, can:'yes' },
+      { n:'Automated follow-up sequences',
+        tl:'3 days',
+        inc:['Day 1, Day 3, Day 7 follow-up messages','Fully customised message templates','Automatically stops when lead replies'],
+        devH:12, gH:1, can:'yes', aiMo:400 },
+    ]
+  },
+
+  // ══ ECOMMERCE ══
+  { id:'F', phase:'Phase 1 — E-Commerce', name:'E-Commerce Platform', tl:'5–6 weeks',
+    tagline:'Sell products online — complete store with payments and inventory',
+    features:[
+      { n:'Home page + product catalogue',
+        tl:'1 week',
+        inc:['Responsive storefront','Featured products section','Category navigation','Search and filter products'],
+        devH:18, gH:1, can:'yes' },
+      { n:'Secure payment gateway',
+        tl:'4 days',
+        inc:['Razorpay integration','Order confirmation & invoice generation','Secure checkout flow'],
+        devH:16, gH:2, can:'yes' },
+      { n:'Product pages',
+        tl:'4 days',
+        inc:['Full product detail view','Image gallery, specs, description','Add to cart + wishlist'],
+        devH:12, gH:1, can:'yes' },
+      { n:'Admin panel + product management',
+        tl:'1 week',
+        inc:['Add, edit, delete products','Price and availability control','All orders in one dashboard'],
+        devH:20, gH:2, can:'yes' },
+      { n:'Dynamic product suggestions',
+        tl:'4 days',
+        inc:['Products update based on search terms','Related products section','Trending based on views'],
+        devH:16, gH:3, can:'guide', aiMo:1000 },
+      { n:'Inventory management',
+        tl:'4 days',
+        inc:['Real-time stock tracking','Low stock alerts','Bulk update support'],
+        devH:18, gH:2, can:'yes' },
+      { n:'Bulk product upload',
+        tl:'2 days',
+        inc:['CSV import for 100s of products at once','Image upload per product','Draft & publish workflow'],
+        devH:12, gH:1, can:'yes' },
+      { n:'Google Analytics + Hotjar',
+        tl:'1 day',
+        inc:['Traffic & user behaviour insights','Conversion funnel tracking','Heatmaps to see what visitors click'],
+        devH:8, gH:0, can:'yes' },
+    ]
+  },
+
+  // ══ 2D CANVAS ══
+  { id:'H', phase:'Phase 2 — AI Playground', name:'2D Floor Plan Canvas', tl:'3–4 weeks',
+    tagline:'Let your clients draw their dream home — intuitive, powerful, professional',
+    features:[
+      { n:'Core drawing tools',
+        tl:'2 weeks',
+        inc:[
+          'Draw walls, doors, windows & staircases',
+          'Snap-to-grid canvas for precision',
+          'Automatic room area calculation',
+          '5 ready-made templates (1BHK, 2BHK, 3BHK, Duplex, Villa)',
+          'Export as PNG, PDF, or project file',
+          'All basic tools in one seamless package'
+        ],
+        devH:56, gH:4, can:'yes',
+        note:'Includes all standard drawing tools — moderately priced as a complete package.' },
+      { n:'Floor plan suggestions from database',
+        tl:'1 week',
+        inc:['Enter your plot dimensions','System matches from 1,000+ existing plans','Filter by style, BHK, and budget','One-click load to canvas'],
+        devH:18, gH:4, can:'guide' },
+      { n:'Multiple floors — G, G+1, G+2',
+        tl:'3 days',
+        inc:['Switch between floor levels','Copy a floor plan to the next floor','Floor-by-floor view toggle'],
+        devH:14, gH:2, can:'yes' },
+    ]
+  },
+
+  // ══ 3D ══
+  { id:'I', phase:'Phase 2 — AI Playground', name:'3D Conversion & Walkthrough', tl:'4 weeks',
+    tagline:'Turn any 2D drawing into a fully walkable 3D space — your biggest differentiator',
+    features:[
+      { n:'2D plan → 3D layout',
+        tl:'2 weeks',
+        inc:['Converts your drawn plan to full 3D automatically','Realistic wall heights and proportions','Roof auto-generated','Multiple floors shown in 3D'],
+        devH:64, gH:8, can:'yes' },
+      { n:'Customise wall colours & textures',
+        tl:'4 days',
+        inc:['Colour picker per room wall','Live update — see changes instantly','Save and switch between colour schemes'],
+        devH:16, gH:2, can:'yes' },
+      { n:'Add furniture to the 3D space',
+        tl:'4 days',
+        inc:['Drag and drop from furniture library','20+ items: bed, sofa, table, wardrobe, and more','Rotate, resize, reposition freely'],
+        devH:20, gH:3, can:'yes' },
+      { n:'Interactive 3D walkthrough',
+        tl:'4 days',
+        inc:['Walk through your design in first-person','360° orbit view from any angle','Room-to-room navigation'],
+        devH:20, gH:4, can:'yes' },
+    ]
+  },
+
+  // ══ AI AGENT ══
+  { id:'J', phase:'Phase 2 — AI Playground', name:'AI Design Assistant (Research Phase)', tl:'5+ weeks',
+    tagline:'Tell the AI what you want — it draws it for you',
+    features:[
+      { n:'AI drawing assistant',
+        tl:'3 weeks',
+        inc:['Type or speak commands → AI draws on canvas','E.g. "Add a bedroom on the north side"','E.g. "Remove the wall between kitchen and dining"','Powered by GPT-4o with canvas control'],
+        devH:40, gH:12, can:'ai', aiMo:5000 },
+      { n:'AI furniture & colour advisor',
+        tl:'2 weeks',
+        inc:['"Suggest furniture for this living room"','Style-based recommendations (modern, traditional, etc.)','AI applies suggestions to 3D view live'],
+        devH:20, gH:5, can:'ai', aiMo:1500 },
+    ]
+  },
+
+  // ══ ELEVATION ══
+  { id:'K', phase:'Phase 2 — AI Playground', name:'AI Elevation Generator', tl:'2–3 weeks',
+    tagline:'Generate photorealistic building elevations from your 3D design using AI',
+    features:[
+      { n:'AI elevation image generator',
+        tl:'2 weeks',
+        inc:['Generates front & side elevation images from 3D model','Architectural style options (modern, contemporary, classic)','First 2 renders free per user','Subscription model activates from render 3'],
+        devH:20, gH:6, can:'ai', aiMo:6000,
+        subTag: true },
+      { n:'Photorealistic elevation (Advanced — Research)',
+        tl:'3–4 weeks',
+        inc:['Architecture-trained AI model','Near-photographic quality renders','Requires dedicated GPU server','Research-phase feature — timeline approximate'],
+        devH:10, gH:20, can:'hard', aiMo:15000 },
+    ]
+  },
+
+];
+
+// ─── STATE ───────────────────────────────────────────────────
+let sel = {};
+packages.forEach(p => p.features.forEach((_,i) => sel[p.id+i] = false));
+
+// ─── BUILD UI ────────────────────────────────────────────────
+function buildUI() {
+  const cont = document.getElementById('container');
+  cont.innerHTML = '';
+  let lastPhase = '';
+
+  packages.forEach(p => {
+    // Phase divider
+    if (p.phase !== lastPhase) {
+      const ph = document.createElement('div');
+      ph.className = 'phase-heading';
+      ph.innerHTML = `<div class="phase-line"></div><div class="phase-label-text">${p.phase}</div><div class="phase-line"></div>`;
+      cont.appendChild(ph);
+      lastPhase = p.phase;
+    }
+
+    const isDefaultOpen = ['A','B','H','I'].includes(p.id);
+    const div = document.createElement('div');
+    div.className = 'pkg' + (isDefaultOpen ? ' open' : '');
+    div.id = 'pkg-' + p.id;
+
+    div.innerHTML = `
+      <div class="pkg-header" onclick="togglePkg('${p.id}')">
+        <span class="pkg-chev">›</span>
+        <div class="pkg-info">
+          <div class="pkg-name">${p.name}</div>
+          <div class="pkg-tagline">${p.tagline}</div>
+        </div>
+        <div class="pkg-right">
+          <span class="pkg-tl-chip">${p.tl}</span>
+          <div class="pkg-price-wrap">
+            <div class="pkg-price" id="ptotal-${p.id}">—</div>
+            <div class="pkg-feat-count" id="pcount-${p.id}"></div>
+          </div>
+        </div>
+      </div>
+      <div class="pkg-body">
+        <div class="tbl-head">
+          <div></div>
+          <div>Feature & What's Included</div>
+          <div>Estimated Timeline</div>
+          <div style="text-align:right">Price</div>
+        </div>
+        <div id="pbody-${p.id}"></div>
+        ${p.note ? `<div class="seo-note">⚡ ${p.note}</div>` : ''}
+      </div>`;
+    cont.appendChild(div);
+
+    // Per-project block after B
+    if (p.id === 'B') {
+      const ppb = document.createElement('div');
+      ppb.className = 'per-proj-block';
+      ppb.innerHTML = `
+        <div class="per-proj-title">Per-Project Card Pricing — After Free 100</div>
+        <div class="per-proj-grid">
+          <div class="per-proj-card">
+            <div class="per-proj-range">101 – 200 projects</div>
+            <div class="per-proj-price">₹30 <span style="font-size:12px;font-weight:400;color:var(--text3)">/ card</span></div>
+            <div class="per-proj-note">~₹3,000 for 100 additional cards</div>
+          </div>
+          <div class="per-proj-card">
+            <div class="per-proj-range">201 – 500 projects</div>
+            <div class="per-proj-price">₹20 <span style="font-size:12px;font-weight:400;color:var(--text3)">/ card</span></div>
+            <div class="per-proj-note">~₹6,000 for 300 cards</div>
+          </div>
+          <div class="per-proj-card">
+            <div class="per-proj-range">500+ projects</div>
+            <div class="per-proj-price">₹12 <span style="font-size:12px;font-weight:400;color:var(--text3)">/ card</span></div>
+            <div class="per-proj-note">Volume rate — best value</div>
+          </div>
+        </div>`;
+      cont.appendChild(ppb);
+    }
+
+    // Feature rows
+    const body = div.querySelector('#pbody-' + p.id);
+    p.features.forEach((f, i) => {
+      const id = p.id + i;
+      const row = document.createElement('div');
+      row.className = 'feat' + (f.free ? ' free-row' : '');
+      row.id = 'row-' + id;
+      if (!f.free) row.onclick = () => toggleFeat(id);
+
+      const incHtml = f.inc?.length
+        ? `<ul class="feat-includes">${f.inc.map(x => `<li>${x}</li>`).join('')}</ul>`
+        : '';
+      const noteHtml = f.note ? `<div class="feat-note">${f.note}</div>` : '';
+      const subBadge = f.subTag ? `<span class="badge b-sub">Subscription</span>` : '';
+      const freeBadge = f.free ? `<span class="badge b-free">FREE — Included</span>` : '';
+      const p_val = f.free ? '' : price(f.devH, f.gH||0, f.aiMo||0, f.fixedCost||0, f.can);
+
+      const checkHtml = f.free
+        ? `<div></div>`
+        : `<div class="feat-cb"><input type="checkbox" id="chk-${id}" onclick="event.stopPropagation();toggleFeat('${id}')"></div>`;
+
+      const priceHtml = f.free
+        ? `<div class="feat-price free">Free</div>`
+        : `<div class="feat-price" id="price-${id}">${fmt(p_val)}</div>`;
+
+      row.innerHTML = `
+        ${checkHtml}
+        <div class="feat-detail">
+          <div class="feat-name">${f.n} ${freeBadge}${subBadge}</div>
+          ${incHtml}
+          ${noteHtml}
+        </div>
+        <div class="feat-tl">${tlBadge(f.tl, f.can)}</div>
+        ${priceHtml}`;
+      body.appendChild(row);
+    });
+  });
+}
+
+// ─── TOGGLE ──────────────────────────────────────────────────
+function togglePkg(id) {
+  document.getElementById('pkg-' + id).classList.toggle('open');
+}
+function toggleFeat(id) {
+  sel[id] = !sel[id];
+  const chk = document.getElementById('chk-' + id);
+  if (chk) chk.checked = sel[id];
+  document.getElementById('row-' + id)?.classList.toggle('sel', sel[id]);
+  updatePkg(id[0]); // update package total
+  calcFooter();
+}
+function selectAll() {
+  packages.forEach(p => {
+    p.features.forEach((f, i) => {
+      if (f.free) return;
+      const id = p.id + i;
+      sel[id] = true;
+      const chk = document.getElementById('chk-' + id);
+      if (chk) chk.checked = true;
+      document.getElementById('row-' + id)?.classList.add('sel');
+    });
+    document.getElementById('pkg-' + p.id)?.classList.add('open');
+  });
+  packages.forEach(p => updatePkg(p.id));
+  calcFooter();
+}
+function clearAll() {
+  packages.forEach(p => {
+    p.features.forEach((_, i) => {
+      const id = p.id + i;
+      sel[id] = false;
+      const chk = document.getElementById('chk-' + id);
+      if (chk) chk.checked = false;
+      document.getElementById('row-' + id)?.classList.remove('sel');
+    });
+    updatePkg(p.id);
+  });
+  calcFooter();
+}
+
+// ─── UPDATE PACKAGE HEADER ───────────────────────────────────
+function updatePkg(pid) {
+  const pkg = packages.find(p => p.id === pid);
+  if (!pkg) return;
+  let total = 0, count = 0;
+  pkg.features.forEach((f, i) => {
+    const id = pid + i;
+    if (!sel[id] || f.free) return;
+    total += price(f.devH, f.gH||0, f.aiMo||0, f.fixedCost||0, f.can);
+    count++;
+  });
+  document.getElementById('ptotal-' + pid).textContent = count > 0 ? fmt(total) : '—';
+  document.getElementById('pcount-' + pid).textContent = count > 0 ? count + ' feature' + (count > 1 ? 's' : '') + ' selected' : '';
+  document.getElementById('pkg-' + pid).classList.toggle('has-sel', count > 0);
+}
+
+// ─── FOOTER CALC ─────────────────────────────────────────────
+function calcFooter() {
+  let totalFeat = 0, totalDevH = 0, totalPrice = 0;
+  let hasPerProject = false;
+
+  packages.forEach(p => {
+    p.features.forEach((f, i) => {
+      const id = p.id + i;
+      if (!sel[id] || f.free) return;
+      totalFeat++;
+      totalDevH += f.devH;
+      totalPrice += price(f.devH, f.gH||0, f.aiMo||0, f.fixedCost||0, f.can);
+      if (p.perProject) hasPerProject = true;
+    });
+  });
+
+  // Timeline: 1 dev working 40h/week
+  const weeks = Math.ceil(totalDevH / 40);
+  const months = Math.round(weeks / 4.33 * 10) / 10;
+  const tlStr = weeks === 0 ? '—' : weeks <= 4 ? `${weeks} weeks` : `${months} months`;
+
+  document.getElementById('s-feat').textContent = totalFeat;
+  document.getElementById('s-tl').textContent = tlStr;
+  document.getElementById('s-tl-sub').textContent = weeks > 0 ? `~ ${weeks} working weeks` : 'from kickoff';
+  document.getElementById('s-onetime').textContent = totalFeat > 0 ? fmt(totalPrice) : '₹0';
+  document.getElementById('s-perproj').textContent = hasPerProject ? '₹30/₹20/₹12' : '—';
+  document.getElementById('grand-amt').textContent = fmt(totalPrice);
+  document.getElementById('grand-note').textContent = totalFeat > 0 ? `${totalFeat} features · ${tlStr} delivery` : 'one-time build fee';
+  document.getElementById('footer-sub').textContent = totalFeat > 0
+    ? `${totalFeat} features selected · estimated delivery ${tlStr}`
+    : 'Select features to see your quote';
+}
+
+// ─── INIT ────────────────────────────────────────────────────
+document.getElementById('today').textContent = new Date().toLocaleDateString('en-IN', {day:'2-digit', month:'long', year:'numeric'});
+buildUI();
+calcFooter();
+</script>
+</body>
+</html>
